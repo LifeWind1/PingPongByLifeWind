@@ -1,9 +1,9 @@
-﻿using Unity.Collections;
+﻿using Game.BallColor;
 using UnityEngine;
 
 namespace Game
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
     public class Ball : MonoBehaviour
     {
         private const float MinSpeed = 150;
@@ -12,17 +12,18 @@ namespace Game
         private const float MinSize = 0.025f;
         private const float MaxSize = 0.1f;
         
-        [ReadOnly]
-        [SerializeField] private float m_speed;
+        [SerializeField] private BallColorArray m_ballColorArray;
         
-        [ReadOnly]
-        [SerializeField] private float m_size;
+        private float m_speed;
+        private float m_size;
         
         private Rigidbody2D m_rigidbody;
-
+        private SpriteRenderer m_sprite;
+        
         private void Awake()
         {
             m_rigidbody = GetComponent<Rigidbody2D>();
+            m_sprite = GetComponent<SpriteRenderer>();
             RandomizeBallParameters();
         }
 
@@ -40,6 +41,11 @@ namespace Game
             m_size = Random.Range(MinSize, MaxSize);
             
             transform.localScale = new Vector2(m_size, m_size);
+        }
+
+        public void SetBallColor(int colorIndex)
+        {
+            m_sprite.color = m_ballColorArray.BallColors[colorIndex].Color;
         }
     }
 }

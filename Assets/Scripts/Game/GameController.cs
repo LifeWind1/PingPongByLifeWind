@@ -29,12 +29,19 @@ namespace Game
             m_playerOne.OnCollisionEnter.AddListener(OnBallHit);
             m_playerTwo.OnCollisionEnter.AddListener(OnBallHit);
 
-            m_bestScore = PlayerPrefsManager.GetBestScore();
-            m_scoreController.SetBestScore(m_bestScore);
-            
+            LoadSettings();
+
             ResetBall();
         }
 
+        private void LoadSettings()
+        {
+            m_bestScore = PlayerPrefsManager.GetBestScore();
+            m_scoreController.SetBestScore(m_bestScore);
+            
+            m_ball.SetBallColor(PlayerPrefsManager.GetBallColor());
+        }
+        
         private void LeanTouchOnFingerUpdate(LeanFinger finger)
         {
             float positionX = finger.GetWorldPosition(m_mainCamera.transform.position.y, m_mainCamera).x;
