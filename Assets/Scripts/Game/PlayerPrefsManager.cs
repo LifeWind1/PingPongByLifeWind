@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enums;
+using UnityEngine;
 
 namespace Game
 {
@@ -6,6 +7,7 @@ namespace Game
     {
         private const string BestScoreKey = "bestScore";
         private const string BallColorKey = "ballColor";
+        private const string GameModeKey = "gameMode";
 
         public static int GetBestScore()
         {
@@ -26,6 +28,17 @@ namespace Game
         public static void SetBallColor(int colorIndex)
         { 
             PlayerPrefs.SetInt(BallColorKey, colorIndex);
+            PlayerPrefs.Save();
+        }
+
+        public static GameMode GetGameMode()
+        {
+            return (GameMode) PlayerPrefs.GetInt(GameModeKey);
+        }
+        
+        public static void SetGameMode(GameMode gameMode)
+        { 
+            PlayerPrefs.SetInt(GameModeKey, (int) gameMode);
             PlayerPrefs.Save();
         }
     }

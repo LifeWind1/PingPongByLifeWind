@@ -1,10 +1,11 @@
 ﻿using Game.BallColor;
+using Mirror;
 using UnityEngine;
 
 namespace Game
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
-    public class Ball : MonoBehaviour
+    public class Ball : NetworkBehaviour
     {
         private const float MinSpeed = 150;
         private const float MaxSpeed = 350;
@@ -19,6 +20,34 @@ namespace Game
         
         private Rigidbody2D m_rigidbody;
         private SpriteRenderer m_sprite;
+
+        public bool IsOffline { get; set; }
+        
+        public Rigidbody2D Rigidbody2D
+        {
+            get
+            {
+                if (!m_rigidbody)
+                {
+                    m_rigidbody = GetComponent<Rigidbody2D>();
+                }
+
+                return m_rigidbody;
+            }   
+        }
+
+        public SpriteRenderer SpriteRenderer
+        {
+            get
+            {
+                if (!m_sprite)
+                {
+                    m_sprite = GetComponent<SpriteRenderer>();
+                }
+
+                return m_sprite;
+            }   
+        }
         
         private void Awake()
         {
@@ -27,12 +56,22 @@ namespace Game
             RandomizeBallParameters();
         }
 
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            
+            Rigidbody2D.simulated = true;
+        }
+        
         public void ResetBall(Vector2 direction)
         {
-            m_rigidbody.Sleep();
-            transform.position = Vector2.zero;
-            m_rigidbody.WakeUp();
-            m_rigidbody.AddForce(direction * m_speed);
+            if (isServer || IsOffline)
+            {
+                Rigidbody2D.Sleep();
+                transform.position = Vector2.zero;
+                Rigidbody2D.WakeUp();
+                Rigidbody2D.AddForce(direction * m_speed);
+            }
         }
 
         public void RandomizeBallParameters()
@@ -45,7 +84,7 @@ namespace Game
 
         public void SetBallColor(int colorIndex)
         {
-            m_sprite.color = m_ballColorArray.BallColors[colorIndex].Color;
+            SpriteRenderer.color = m_ballColorArray.BallColors[colorIndex].Color;
         }
     }
 }
