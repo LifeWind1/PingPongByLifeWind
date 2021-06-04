@@ -457,10 +457,11 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs: []
-  m_playerOnePlace: {fileID: 1620280725}
-  m_playerTwoPlace: {fileID: 1341142314}
-  m_playersParent: {fileID: 2089603087}
+  m_playerManager: {fileID: 1490266784}
   SecondPlayerConnected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerConnected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &330436779
@@ -716,10 +717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_scoreController: {fileID: 606251958}
-  m_playerPrefab: {fileID: 3687769307164589267, guid: db9932e842f943645b729b945887ffbb, type: 3}
-  m_playerOnePlace: {fileID: 1620280725}
-  m_playerTwoPlace: {fileID: 1341142314}
-  m_playersParent: {fileID: 2089603087}
+  m_playerManager: {fileID: 1490266784}
   m_ball: {fileID: 1790226544}
   m_borderOne: {fileID: 669560092}
   m_borderTwo: {fileID: 530932841}
@@ -749,6 +747,7 @@ GameObject:
   - component: {fileID: 606251957}
   - component: {fileID: 606251958}
   - component: {fileID: 606251959}
+  - component: {fileID: 606251960}
   m_Layer: 5
   m_Name: ScorePanel
   m_TagString: Untagged
@@ -789,6 +788,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86d58f51f174a3d8d848d628a97635c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   m_currentScore: {fileID: 900480789}
   m_bestScore: {fileID: 159291072}
   m_playerOneScore: {fileID: 1946754325}
@@ -819,6 +820,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &606251960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606251956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 165585326
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &669560089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1493,53 @@ Transform:
   m_Father: {fileID: 2089603087}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1490266782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1490266783}
+  - component: {fileID: 1490266784}
+  m_Layer: 0
+  m_Name: PlayerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1490266783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490266782}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1699832158}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1490266784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490266782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1cf18062e3641c7961d1f8aef33c79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_playerPrefab: {fileID: 3687769307164589267, guid: db9932e842f943645b729b945887ffbb, type: 3}
+  m_playerOnePlace: {fileID: 1620280725}
+  m_playerTwoPlace: {fileID: 1341142314}
+  m_playersParent: {fileID: 2089603087}
 --- !u!1 &1620280724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,6 +1602,7 @@ Transform:
   - {fileID: 1015359346}
   - {fileID: 1040915826}
   - {fileID: 330436776}
+  - {fileID: 1490266783}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1693,11 +1759,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  clientAuthority: 1
+  clientAuthority: 0
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
-  compressRotation: 0
+  compressRotation: 1
   interpolateScale: 1
   syncScale: 1
 --- !u!114 &1790226546

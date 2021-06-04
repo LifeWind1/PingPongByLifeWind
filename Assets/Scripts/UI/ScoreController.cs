@@ -1,16 +1,23 @@
 ﻿using Enums;
+using Mirror;
 using TMPro;
 using UnityEngine;
 
 namespace UI
 {
-    public class ScoreController : MonoBehaviour
+    public class ScoreController : NetworkBehaviour
     {
         [SerializeField] private TextMeshProUGUI m_currentScore;
         [SerializeField] private TextMeshProUGUI m_bestScore;
-
+        
         [SerializeField] private TextMeshProUGUI m_playerOneScore;
         [SerializeField] private TextMeshProUGUI m_playerTwoScore;
+
+        [SyncVar(hook = nameof(SetPlayerOneScore))]
+        public int m_playerOneCurrentScore;
+        
+        [SyncVar(hook = nameof(SetPlayerTwoScore))]
+        public int m_playerTwoCurrentScore;
 
         public void SetGameMode(GameMode gameMode)
         {
@@ -41,17 +48,27 @@ namespace UI
         {
             m_bestScore.text = $"Best: {score}";
         }
-
+        
         public void SetOnlineScore(int index, int score)
         {
             if (index == 0)
             {
-                m_playerOneScore.text = score.ToString();
+                m_playerOneCurrentScore = score;
             }
             else
             {
-                m_playerTwoScore.text = score.ToString();
+                m_playerTwoCurrentScore = score;
             }
+        }
+
+        private void SetPlayerOneScore(int oldScore, int newScore)
+        {
+            m_playerOneScore.text = newScore.ToString();
+        }
+        
+        private void SetPlayerTwoScore(int oldScore, int newScore)
+        {
+            m_playerTwoScore.text = newScore.ToString();
         }
     }
 }
