@@ -39,6 +39,7 @@ namespace Game
             {
                 m_networkManager.gameObject.SetActive(false);
                 m_ball.gameObject.SetActive(true);
+                m_scoreController.gameObject.SetActive(true);
                 
                 m_playerOne = m_playerManager.CreatePlayerOne(true);
                 m_playerTwo = m_playerManager.CreatePlayerTwo(true);
